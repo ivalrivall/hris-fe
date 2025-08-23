@@ -34,16 +34,16 @@ const AuthLayout = () => {
         <div className='d-flex flex-center flex-wrap px-5'>
           {/* begin::Links */}
           <div className='d-flex fw-semibold text-primary fs-base'>
-            <a href='#' className='px-5' target='_blank'>
-              Terms
+            <a href='https://github.com/ivalrivall' className='px-5' target='_blank'>
+              Ival Github
             </a>
 
-            <a href='#' className='px-5' target='_blank'>
-              Plans
+            <a href='https://bit.ly/45VHW2c' className='px-5' target='_blank'>
+              Portofolio
             </a>
 
-            <a href='#' className='px-5' target='_blank'>
-              Contact Us
+            <a href='mailto:ivalrivall@gmail.com' className='px-5' target='_blank'>
+              Contact Me
             </a>
           </div>
           {/* end::Links */}

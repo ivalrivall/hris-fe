@@ -1,5 +1,10 @@
+export interface AccessTokenModel {
+  expiresIn: number
+  token: string
+}
+
 export interface AuthModel {
-  api_token: string
+  accessToken: AccessTokenModel
   refreshToken?: string
 }
 

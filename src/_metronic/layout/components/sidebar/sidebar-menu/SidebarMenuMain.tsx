@@ -15,9 +15,9 @@ const SidebarMenuMain = () => {
         fontIcon='bi-app-indicator'
       />
       <SidebarMenuItem
-        to='/p/users'
+        to='/p/employee'
         icon='element-11'
-        title='User management'
+        title='Employee Management'
         fontIcon='bi-layers'
       />
     </>

@@ -4,6 +4,8 @@ export type User = {
   name?: string
   avatar?: string
   email?: string
+  phone?: string
+  password?: string
   position?: string
   role?: string
   last_login?: string
@@ -24,4 +26,6 @@ export const initialUser: User = {
   role: 'Administrator',
   name: '',
   email: '',
+  phone: '',
+  password: '',
 }

@@ -20,19 +20,19 @@ const usersColumns: ColumnDef<User>[] = [
     cell: (info) => <UserInfoCell user={info.row.original} />,
   },
   {
-    header: (props) => <UserCustomHeader tableProps={props} title='Role' className='min-w-125px' />,
-    accessorKey: 'role',
+    header: (props) => <UserCustomHeader tableProps={props} title='Job Position' className='min-w-125px' />,
+    accessorKey: 'position',
   },
   {
     header: (props) => (
-      <UserCustomHeader tableProps={props} title='Last login' className='min-w-125px' />
+      <UserCustomHeader tableProps={props} title='Last check in' className='min-w-125px' />
     ),
     id: 'last_login',
     cell: (info) => <UserLastLoginCell last_login={info.row.original.last_login} />,
   },
   {
     header: (props) => (
-      <UserCustomHeader tableProps={props} title='Two steps' className='min-w-125px' />
+      <UserCustomHeader tableProps={props} title='Last checkout' className='min-w-125px' />
     ),
     id: 'two_steps',
     cell: (info) => <UserTwoStepsCell two_steps={info.row.original.two_steps} />,

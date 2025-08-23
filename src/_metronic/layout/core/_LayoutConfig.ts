@@ -21,7 +21,7 @@ export const DefaultConfig: ILayout = {
     },
     header: {
       componentName: 'header',
-      display: false,
+      display: true,
       default: {
         container: 'fluid',
         containerClass: 'd-flex align-items-stretch justify-content-between',

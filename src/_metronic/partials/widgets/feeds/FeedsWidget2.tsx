@@ -25,10 +25,10 @@ const FeedsWidget2: React.FC<Props> = ({className}) => {
             {/* begin::Info */}
             <div className='d-flex flex-column'>
               <a href='#' className='text-gray-800 text-hover-primary fs-6 fw-bold'>
-                Nick Logan
+                Ival
               </a>
 
-              <span className='text-gray-500 fw-semibold'>PHP, SQLite, Artisan CLI</span>
+              <span className='text-gray-500 fw-semibold'>CEO</span>
             </div>
             {/* end::Info */}
           </div>
@@ -52,21 +52,14 @@ const FeedsWidget2: React.FC<Props> = ({className}) => {
         {/* end::Header */}
 
         {/* begin::Post */}
-        <div className='mb-5'>
-          {/* begin::Text */}
-          <p className='text-gray-800 fw-normal mb-5'>
-            Outlines keep you honest. They stop you from indulging in poorly thought-out metaphors
-            about driving and keep you focused on the overall structure of your post
-          </p>
-          {/* end::Text */}
-
+        <div className='mb-5'>          
           {/* begin::Toolbar */}
           <div className='d-flex align-items-center mb-5'>
             <a
               href='#'
               className='btn btn-sm btn-light btn-color-muted btn-active-light-success px-4 py-2 me-4'
             >
-              <KTIcon iconName='message-text-2' className='fs-2' />
+              <i className="las la-user-clock fs-2"></i>
               120
             </a>
 
@@ -74,37 +67,13 @@ const FeedsWidget2: React.FC<Props> = ({className}) => {
               href='#'
               className='btn btn-sm btn-light btn-color-muted btn-active-light-danger px-4 py-2'
             >
-              <KTIcon iconName='heart' className='fs-2' />
+              <i className="las la-door-open fs-2"></i>
               15
             </a>
           </div>
           {/* end::Toolbar */}
         </div>
         {/* end::Post */}
-
-        {/* begin::Separator */}
-        <div className='separator mb-4'></div>
-        {/* end::Separator */}
-
-        {/* begin::Reply input */}
-        <form className='position-relative mb-6'>
-          <textarea
-            className='form-control border-0 p-0 pe-10 resize-none min-h-25px'
-            rows={1}
-            placeholder='Reply..'
-          ></textarea>
-
-          <div className='position-absolute top-0 end-0 me-n5'>
-            <span className='btn btn-icon btn-sm btn-active-color-primary pe-0 me-2'>
-              <KTIcon iconName='paper-clip' className='fs-3 mb-3' />
-            </span>
-
-            <span className='btn btn-icon btn-sm btn-active-color-primary ps-0'>
-              <KTIcon iconName='geolocation' className='fs-2 mb-3' />
-            </span>
-          </div>
-        </form>
-        {/* edit::Reply input */}
       </div>
       {/* end::Body */}
     </div>
