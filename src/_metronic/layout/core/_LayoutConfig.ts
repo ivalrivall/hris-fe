@@ -32,7 +32,7 @@ export const DefaultConfig: ILayout = {
         content: 'menu',
         menu: {
           display: true,
-          iconType: 'svg',
+          iconType: 'font',
         },
       },
     },
@@ -69,7 +69,7 @@ export const DefaultConfig: ILayout = {
           },
         },
         menu: {
-          iconType: 'svg',
+          iconType: 'font',
         },
       },
     },

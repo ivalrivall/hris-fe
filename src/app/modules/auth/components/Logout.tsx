@@ -1,9 +1,9 @@
-import {useEffect} from 'react'
-import {Navigate, Routes} from 'react-router-dom'
-import {useAuth} from './core/Auth'
+import { useEffect } from 'react'
+import { Navigate, Routes } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 export function Logout() {
-  const {logout} = useAuth()
+  const { logout } = useAuth()
   useEffect(() => {
     logout()
     document.location.reload()

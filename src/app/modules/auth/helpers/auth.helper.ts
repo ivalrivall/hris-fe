@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {AuthModel} from './_models'
+import { AuthModel } from '../types/auth.types'
 
+// Keep only pure helpers here. Axios setup moved to src/app/services/http.ts
 const AUTH_LOCAL_STORAGE_KEY = 'kt-auth-react-v'
+
 const getAuth = (): AuthModel | undefined => {
   if (!localStorage) {
     return
@@ -48,19 +50,4 @@ const removeAuth = () => {
   }
 }
 
-export function setupAxios(axios: any) {
-  axios.defaults.headers.Accept = 'application/json'
-  axios.interceptors.request.use(
-    (config: {headers: {Authorization: string}}) => {
-      const auth = getAuth()
-      if (auth && auth.accessToken && auth.accessToken.token) {
-        config.headers.Authorization = `Bearer ${auth.accessToken.token}`
-      }
-
-      return config
-    },
-    (err: any) => Promise.reject(err)
-  )
-}
-
-export {getAuth, setAuth, removeAuth, AUTH_LOCAL_STORAGE_KEY}
+export { getAuth, setAuth, removeAuth, AUTH_LOCAL_STORAGE_KEY }

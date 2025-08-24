@@ -113,7 +113,7 @@ export function MenuInner() {
           <MenuItem to='/apps/chat/group-chat' title='Group Chart' hasBullet={true} />
           <MenuItem to='/apps/chat/drawer-chat' title='Drawer Chart' hasBullet={true} />
         </MenuInnerWithSub>
-        <MenuItem icon='abstract-28' to='/users' title='User management' />
+        <MenuItem icon='abstract-28' to='/employee/users' title='User management' />
       </MenuInnerWithSub>
 
       <MenuInnerWithSub

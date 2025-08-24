@@ -7,7 +7,13 @@ import {
   TablesWidget5,
 } from '../../../../_metronic/partials/widgets'
 import { Content } from '../../../../_metronic/layout/components/content'
-
+/**
+ * TODO
+ * implement identitas karyawan
+ * ringkasan kehadiran bulan ini (total hari kerja, masuk, tidak masuk, terlambat masuk, lembur)
+ * status hari ini (hadir, belum absen, terlambat) , jam masuk & jam pulang jika sudah absen
+ * riwayat absen 7 hari terakhir
+ */
 export function Overview() {
   return (
     <Content>

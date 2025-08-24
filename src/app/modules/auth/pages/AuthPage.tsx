@@ -1,8 +1,8 @@
-import {Route, Routes} from 'react-router-dom'
-import {Registration} from './components/Registration'
-import {ForgotPassword} from './components/ForgotPassword'
-import {Login} from './components/Login'
-import {AuthLayout} from './AuthLayout'
+import { Route, Routes } from 'react-router-dom'
+import { Registration } from '../components/Registration'
+import { ForgotPassword } from '../components/ForgotPassword'
+import { Login } from '../components/Login'
+import { AuthLayout } from '../layouts/AuthLayout'
 
 const AuthPage = () => (
   <Routes>
@@ -15,4 +15,4 @@ const AuthPage = () => (
   </Routes>
 )
 
-export {AuthPage}
+export { AuthPage }

@@ -4,8 +4,8 @@ import * as Yup from 'yup'
 import clsx from 'clsx'
 import { Link } from 'react-router-dom'
 import { useFormik } from 'formik'
-import { getUserByToken, login } from '../core/_requests'
-import { useAuth } from '../core/Auth'
+import { getUserByToken, login } from '../api'
+import { useAuth } from '../context/AuthContext'
 
 const loginSchema = Yup.object().shape({
   email: Yup.string()
@@ -42,7 +42,8 @@ export function Login() {
       try {
         const { data: auth } = await login(values.email, values.password)
         saveAuth(auth)
-        const { data: user } = await getUserByToken(auth.api_token)
+        const token = auth?.accessToken?.token
+        const { data: user } = await getUserByToken(token)
         setCurrentUser(user)
       } catch (error) {
         console.error(error)
@@ -76,8 +77,20 @@ export function Login() {
       ) : (
         <div className='mb-10 bg-light-info p-8 rounded'>
           <div className='text-info'>
-            Use account <strong>admin@example.com</strong> and password <strong>admin123</strong> to
-            continue.
+            Admin:
+            <ul>
+              <li>Email: <strong>admin@example.com</strong></li>
+              <li>Password: <strong>admin123</strong></li>
+            </ul>
+            User:
+            <ul>
+              <li>
+                Email: <strong>user@example.com</strong>
+              </li>
+              <li>
+                Password: <strong>user123</strong>
+              </li>
+            </ul>
           </div>
         </div>
       )}
@@ -133,18 +146,6 @@ export function Login() {
         )}
       </div>
       {/* end::Form group */}
-
-      {/* begin::Wrapper */}
-      <div className='d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-8'>
-        <div />
-
-        {/* begin::Link */}
-        <Link to='/auth/forgot-password' className='link-primary'>
-          Forgot Password ?
-        </Link>
-        {/* end::Link */}
-      </div>
-      {/* end::Wrapper */}
 
       {/* begin::Action */}
       <div className='d-grid mb-10'>
