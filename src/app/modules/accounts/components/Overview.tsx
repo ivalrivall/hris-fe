@@ -1,12 +1,8 @@
-import {Link} from 'react-router-dom'
-import {KTIcon} from '../../../../_metronic/helpers'
-import {
-  ChartsWidget1,
-  ListsWidget5,
-  TablesWidget1,
-  TablesWidget5,
-} from '../../../../_metronic/partials/widgets'
-import { Content } from '../../../../_metronic/layout/components/content'
+import { Link } from 'react-router-dom'
+import { KTIcon } from '@metronic/helpers'
+import type { UserModel } from '@modules/auth/types/auth.types'
+import { ListsWidget5 } from '@metronic/partials/widgets'
+import { Content } from '@metronic/layout/components/content'
 /**
  * TODO
  * implement identitas karyawan
@@ -14,7 +10,7 @@ import { Content } from '../../../../_metronic/layout/components/content'
  * status hari ini (hadir, belum absen, terlambat) , jam masuk & jam pulang jika sudah absen
  * riwayat absen 7 hari terakhir
  */
-export function Overview() {
+export function Overview({ user }: { user?: UserModel }) {
   return (
     <Content>
       <div className='card mb-5 mb-xl-10' id='kt_profile_details_view'>
@@ -33,73 +29,32 @@ export function Overview() {
             <label className='col-lg-4 fw-bold text-muted'>Full Name</label>
 
             <div className='col-lg-8'>
-              <span className='fw-bolder fs-6 text-gray-900'>Max Smith</span>
+              <span className='fw-bolder fs-6 text-gray-900'>{user?.name ?? '-'}</span>
             </div>
           </div>
 
           <div className='row mb-7'>
-            <label className='col-lg-4 fw-bold text-muted'>Company</label>
+            <label className='col-lg-4 fw-bold text-muted'>Email</label>
 
             <div className='col-lg-8 fv-row'>
-              <span className='fw-bold fs-6'>Keenthemes</span>
+              <span className='fw-bold fs-6'>{user?.email ?? '-'}</span>
             </div>
           </div>
 
           <div className='row mb-7'>
             <label className='col-lg-4 fw-bold text-muted'>
               Contact Phone
-              <i
-                className='fas fa-exclamation-circle ms-1 fs-7'
-                data-bs-toggle='tooltip'
-                title='Phone number must be active'
-              ></i>
             </label>
 
             <div className='col-lg-8 d-flex align-items-center'>
-              <span className='fw-bolder fs-6 me-2'>044 3276 454 935</span>
-
-              <span className='badge badge-success'>Verified</span>
+              <span className='fw-bolder fs-6 me-2'>{user?.phone ?? '-'}</span>
             </div>
           </div>
 
           <div className='row mb-7'>
-            <label className='col-lg-4 fw-bold text-muted'>Company Site</label>
-
+            <label className='col-lg-4 fw-bold text-muted'>Role</label>
             <div className='col-lg-8'>
-              <a href='#' className='fw-bold fs-6 text-gray-900 text-hover-primary'>
-                keenthemes.com
-              </a>
-            </div>
-          </div>
-
-          <div className='row mb-7'>
-            <label className='col-lg-4 fw-bold text-muted'>
-              Country
-              <i
-                className='fas fa-exclamation-circle ms-1 fs-7'
-                data-bs-toggle='tooltip'
-                title='Country of origination'
-              ></i>
-            </label>
-
-            <div className='col-lg-8'>
-              <span className='fw-bolder fs-6 text-gray-900'>Germany</span>
-            </div>
-          </div>
-
-          <div className='row mb-7'>
-            <label className='col-lg-4 fw-bold text-muted'>Communication</label>
-
-            <div className='col-lg-8'>
-              <span className='fw-bolder fs-6 text-gray-900'>Email, Phone</span>
-            </div>
-          </div>
-
-          <div className='row mb-10'>
-            <label className='col-lg-4 fw-bold text-muted'>Allow Changes</label>
-
-            <div className='col-lg-8'>
-              <span className='fw-bold fs-6'>Yes</span>
+              <span className='fw-bolder fs-6 text-gray-900'>{user?.role ?? '-'}</span>
             </div>
           </div>
 
@@ -123,22 +78,8 @@ export function Overview() {
       </div>
 
       <div className='row gy-10 gx-xl-10'>
-        <div className='col-xl-6'>
-          <ChartsWidget1 className='card-xxl-stretch mb-5 mb-xl-10' />
-        </div>
-
-        <div className='col-xl-6'>
-          <TablesWidget1 className='card-xxl-stretch mb-5 mb-xl-10' />
-        </div>
-      </div>
-
-      <div className='row gy-10 gx-xl-10'>
-        <div className='col-xl-6'>
+        <div className='col-xl-12'>
           <ListsWidget5 className='card-xxl-stretch mb-5 mb-xl-10' />
-        </div>
-
-        <div className='col-xl-6'>
-          <TablesWidget5 className='card-xxl-stretch mb-5 mb-xl-10' />
         </div>
       </div>
     </Content>

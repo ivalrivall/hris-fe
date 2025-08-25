@@ -2,13 +2,13 @@ import { FC, Suspense, lazy } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { MasterLayout } from '../../_metronic/layout/MasterLayout'
 import TopBarProgress from 'react-topbar-progress-indicator'
-import { DashboardWrapper } from '../pages/dashboard/DashboardWrapper'
+import { DashboardWrapper } from '../modules/dashboard/pages/DashboardPage'
 import { getCSSVariableValue } from '../../_metronic/assets/ts/_utils'
 import { WithChildren } from '../../_metronic/helpers'
 import { useAuth } from '../modules/auth'
-import AccountPage from '@app/pages/account/AccountPage'
+import AccountPage from '@modules/accounts/pages/AccountPage'
 
-const UsersPage = lazy(() => import('../modules/apps/user-management/UsersPage'))
+const UsersPage = lazy(() => import('../modules/users/pages/UsersPage'))
 
 // ----------
 // Utilities
@@ -41,7 +41,6 @@ const PrivateRoutes = () => {
   return (
     <Routes>
       <Route element={<MasterLayout />}> {
-        /* Redirect to Dashboard after success login/registration */
       }
         <Route path='auth/*' element={<Navigate to='/dashboard' />} />
 
@@ -55,7 +54,13 @@ const PrivateRoutes = () => {
           }
         />
 
-        <Route path='account/*' element={<AccountPage />} />
+        <Route path='account/*' element={
+          <SuspensedView>
+              <RoleRoute allow={(r) => hasRole(r, 'USER')}>
+                <AccountPage />
+              </RoleRoute>
+          </SuspensedView>
+        } />
 
         <Route
           path='employee/*'

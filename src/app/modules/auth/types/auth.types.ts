@@ -16,5 +16,6 @@ export interface UserModel {
   phone: string
   role: string
   avatar?: string
+  position: string
   auth?: AuthModel
 }

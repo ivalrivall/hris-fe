@@ -13,7 +13,7 @@ const ListsWidget5: React.FC<Props> = ({className}) => {
       {/* begin::Header */}
       <div className='card-header align-items-center border-0 mt-4'>
         <h3 className='card-title align-items-start flex-column'>
-          <span className='fw-bold mb-2 text-gray-900'>Activities</span>
+          <span className='fw-bold mb-2 text-gray-900'>Absence History</span>
           <span className='text-muted fw-semibold fs-7'>890,344 Sales</span>
         </h3>
         <div className='card-toolbar'>
