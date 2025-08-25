@@ -8,6 +8,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getTodayAbsence, storeAbsence } from '../api'
 import type { UserModel } from '@modules/auth/types/auth.types'
 import type { AbsenceModel } from '../types/absence.types'
+import { getUserStats } from '@modules/users/api'
+import { UserStats } from '@modules/users/types'
 
 const AccountHeader: FC<{ user?: UserModel }> = ({ user }) => {
   const location = useLocation()
@@ -17,6 +19,16 @@ const AccountHeader: FC<{ user?: UserModel }> = ({ user }) => {
   const isSettings = location.pathname === '/account/settings'
 
   const queryClient = useQueryClient()
+
+  // Fetch user statistics for totals
+  const { data: userStats } = useQuery<UserStats>({
+    queryKey: ['user', 'stats', user?.id],
+    queryFn: async () => {
+      const { data } = await getUserStats(user!.id)
+      return data
+    },
+    enabled: !!user?.id,
+  })
 
   const { data: todayAbsences, isLoading: isAbsenceLoading } = useQuery<AbsenceModel[]>({
     queryKey: ['absence', 'today'],
@@ -164,35 +176,32 @@ const AccountHeader: FC<{ user?: UserModel }> = ({ user }) => {
                 <div className='d-flex flex-wrap flex-stack'>
                   <div className='d-flex flex-column flex-grow-1 pe-8'>
                     <div className='d-flex flex-wrap'>
+                      {/* Stats cards */}
                       <div className='border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3'>
                         <div className='d-flex align-items-center'>
-                          <div className='fs-2 fw-bolder'>4500$</div>
+                          <div className='fs-2 fw-bolder'>{userStats?.totalWorkDay ?? '-'}</div>
                         </div>
-
                         <div className='fw-bold fs-6 text-gray-500'>Total Work Day</div>
                       </div>
 
                       <div className='border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3'>
                         <div className='d-flex align-items-center'>
-                          <div className='fs-2 fw-bolder'>75</div>
+                          <div className='fs-2 fw-bolder'>{userStats?.totalPresence ?? '-'}</div>
                         </div>
-
-                        <div className='fw-bold fs-6 text-gray-500'>Total In</div>
+                        <div className='fw-bold fs-6 text-gray-500'>Total Presence</div>
                       </div>
 
                       <div className='border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3'>
                         <div className='d-flex align-items-center'>
-                          <div className='fs-2 fw-bolder'>60%</div>
+                          <div className='fs-2 fw-bolder'>{userStats?.totalAbsent ?? '-'}</div>
                         </div>
-
-                        <div className='fw-bold fs-6 text-gray-500'>Total Alpha</div>
+                        <div className='fw-bold fs-6 text-gray-500'>Total Absent</div>
                       </div>
 
                       <div className='border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3'>
                         <div className='d-flex align-items-center'>
-                          <div className='fs-2 fw-bolder'>60%</div>
+                          <div className='fs-2 fw-bolder'>{userStats?.totalLate ?? '-'}</div>
                         </div>
-
                         <div className='fw-bold fs-6 text-gray-500'>Total Late</div>
                       </div>
                     </div>

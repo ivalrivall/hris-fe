@@ -8,3 +8,10 @@ export interface UserModel {
   avatar?: string
   position: string
 }
+
+export interface UserStats {
+  totalWorkDay: number
+  totalPresence: number
+  totalAbsent: number
+  totalLate: number
+}

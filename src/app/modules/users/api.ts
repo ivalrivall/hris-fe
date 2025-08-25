@@ -1,4 +1,4 @@
-import { UserModel } from './types/user.types'
+import { UserModel, UserStats } from './types/user.types'
 import http from '../../services/http'
 
 const ENDPOINTS = {
@@ -24,4 +24,9 @@ export function createUser(
 
 export function listUser() {
   return http.get<UserModel[]>(ENDPOINTS.user)
+}
+
+// Fetch user stats from authenticated users endpoint
+export function getUserStats(userId: number) {
+  return http.get<UserStats>(ENDPOINTS.user + `/${userId}`)
 }
