@@ -1,13 +1,13 @@
 
 import React from 'react'
-import {KTIcon} from '../../../helpers'
-import {Dropdown1} from '../../content/dropdown/Dropdown1'
+import {KTIcon} from '../../../../_metronic/helpers'
+import {Dropdown1} from '../../../../_metronic/partials/content/dropdown/Dropdown1'
 
 type Props = {
   className: string
 }
 
-const ListsWidget5: React.FC<Props> = ({className}) => {
+const AbsenceHistory: React.FC<Props> = ({className}) => {
   return (
     <div className={`card ${className}`}>
       {/* begin::Header */}
@@ -192,4 +192,4 @@ const ListsWidget5: React.FC<Props> = ({className}) => {
   )
 }
 
-export {ListsWidget5}
+export {AbsenceHistory}

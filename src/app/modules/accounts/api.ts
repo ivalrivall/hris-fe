@@ -13,8 +13,8 @@ export function storeAbsence(status: string) {
     )
 }
 
-export function updateAbsence(status: string) {
-    return http.put<{ status: boolean }>(ENDPOINTS.absence, { status })
+export function updateAbsence(status: string, id: string) {
+    return http.put<{ status: boolean }>(`${ENDPOINTS.absence}/${id}`, { status })
 }
 
 export function listAbsence() {

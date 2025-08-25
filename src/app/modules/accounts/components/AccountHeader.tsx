@@ -5,7 +5,7 @@ import { useLocation } from 'react-router'
 import { ToolbarWrapper } from '@metronic/layout/components/toolbar'
 import { Content } from '@metronic/layout/components/content'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { getTodayAbsence, storeAbsence, updateAbsence } from '../api'
+import { getTodayAbsence, storeAbsence } from '../api'
 import type { UserModel } from '@modules/auth/types/auth.types'
 import type { AbsenceModel } from '../types/absence.types'
 
@@ -38,7 +38,7 @@ const AccountHeader: FC<{ user?: UserModel }> = ({ user }) => {
 
   const { mutate: handleClockOut, isPending: isClockOutLoading } = useMutation({
     mutationFn: async () => {
-      await updateAbsence('out')
+      await storeAbsence('out')
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['absence', 'today'] })
@@ -61,7 +61,7 @@ const AccountHeader: FC<{ user?: UserModel }> = ({ user }) => {
 
   const getAttendanceColor = () => {
     if (isAbsenceLoading || !todayAbsences || todayAbsences.length === 0) return 'text-gray-500'
-    return latestStatus === 'in' ? 'text-success' : 'text-secondary'
+    return latestStatus === 'in' ? 'text-success' : 'text-gray-500'
   }
 
   // Work time window and progress
@@ -166,7 +166,6 @@ const AccountHeader: FC<{ user?: UserModel }> = ({ user }) => {
                     <div className='d-flex flex-wrap'>
                       <div className='border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3'>
                         <div className='d-flex align-items-center'>
-                          <KTIcon iconName='arrow-up' className='fs-3 text-success me-2' />
                           <div className='fs-2 fw-bolder'>4500$</div>
                         </div>
 
@@ -175,7 +174,6 @@ const AccountHeader: FC<{ user?: UserModel }> = ({ user }) => {
 
                       <div className='border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3'>
                         <div className='d-flex align-items-center'>
-                          <KTIcon iconName='arrow-down' className='fs-3 text-danger me-2' />
                           <div className='fs-2 fw-bolder'>75</div>
                         </div>
 
@@ -184,7 +182,6 @@ const AccountHeader: FC<{ user?: UserModel }> = ({ user }) => {
 
                       <div className='border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3'>
                         <div className='d-flex align-items-center'>
-                          <KTIcon iconName='arrow-up' className='fs-3 text-success me-2' />
                           <div className='fs-2 fw-bolder'>60%</div>
                         </div>
 
@@ -193,7 +190,6 @@ const AccountHeader: FC<{ user?: UserModel }> = ({ user }) => {
 
                       <div className='border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3'>
                         <div className='d-flex align-items-center'>
-                          <KTIcon iconName='arrow-up' className='fs-3 text-success me-2' />
                           <div className='fs-2 fw-bolder'>60%</div>
                         </div>
 
@@ -204,7 +200,7 @@ const AccountHeader: FC<{ user?: UserModel }> = ({ user }) => {
 
                   <div className='d-flex align-items-center w-200px w-sm-300px flex-column mt-3'>
                     <div className='d-flex justify-content-between w-100 mt-auto mb-2'>
-                      <span className='fw-bold fs-6 mb-3 text-gray-500'>Work Time</span>
+                      <span className='fw-bold fs-6 mb-3 text-gray-500'>Office Hours (08:00 - 18:00)</span>
                       <span className='fw-bolder fs-6'>{Math.round(progressPct)}%</span>
                     </div>
                     <div className='position-relative h-5px mx-3 w-100 bg-light mb-3'>
@@ -219,9 +215,9 @@ const AccountHeader: FC<{ user?: UserModel }> = ({ user }) => {
                       {firstIn && (
                         <div
                           className='position-absolute'
-                          style={{ left: `${clamp(progressPct, (inMarkerPct ?? 0), 100)}%`, top: -16, transform: 'translateX(-50%)' }}
+                          style={{ left: `${clamp(progressPct, (inMarkerPct ?? 0), 100)}%`, top: -21, transform: 'translateX(-50%)' }}
                         >
-                          <span className='badge badge-light text-muted fs-9'>{formatDuration(elapsedFromInMs)}</span>
+                          <span className='badge badge-light text-muted fs-9'>Work Time: {formatDuration(elapsedFromInMs)}</span>
                         </div>
                       )}
 
@@ -231,7 +227,8 @@ const AccountHeader: FC<{ user?: UserModel }> = ({ user }) => {
                           className='position-absolute top-50 translate-middle-y text-center'
                           style={{ left: `${inMarkerPct}%` }}
                         >
-                          <div className='bg-primary' style={{ width: 2, height: 12, borderRadius: 1 }} />
+                          <div className='bg-primary' data-bs-toggle='tooltip' data-bs-placement='top' data-bs-trigger='hover'
+                            title='Time in' style={{ width: 2, height: 12, borderRadius: 1 }} />
                           <div className='mt-1 text-gray-500' style={{ fontSize: 10 }}>{formatTime(eventTime(firstIn!))}</div>
                         </div>
                       )}
@@ -242,7 +239,8 @@ const AccountHeader: FC<{ user?: UserModel }> = ({ user }) => {
                           className='position-absolute top-50 translate-middle-y text-center'
                           style={{ left: `${outMarkerPct}%` }}
                         >
-                          <div className='bg-secondary' style={{ width: 2, height: 12, borderRadius: 1 }} />
+                          <div className='bg-secondary' data-bs-toggle='tooltip' data-bs-placement='top' data-bs-trigger='hover'
+                            title='Time out' style={{ width: 2, height: 12, borderRadius: 1 }} />
                           <div className='mt-1 text-gray-500' style={{ fontSize: 10 }}>{formatTime(eventTime(lastOut!))}</div>
                         </div>
                       )}

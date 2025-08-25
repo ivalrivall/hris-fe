@@ -4,7 +4,6 @@ import {
   ListsWidget2,
   ListsWidget3,
   ListsWidget4,
-  ListsWidget5,
   ListsWidget6,
   ListsWidget7,
   ListsWidget8,
@@ -37,7 +36,7 @@ const Lists: FC = () => {
             <ListsWidget4 className='card-xl-stretch mb-xl-8' />
           </div>
           <div className='col-xl-4'>
-            <ListsWidget5 className='card-xl-stretch mb-xl-8' />
+            {/* <ListsWidget5 className='card-xl-stretch mb-xl-8' /> */}
           </div>
           <div className='col-xl-4'>
             <ListsWidget6 className='card-xl-stretch mb-5 mb-xl-8' />

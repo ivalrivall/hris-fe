@@ -6,7 +6,6 @@ import {
   FeedsWidget5,
   FeedsWidget6,
   ChartsWidget1,
-  ListsWidget5,
   ListsWidget2,
 } from '../../../../_metronic/partials/widgets'
 
@@ -28,8 +27,6 @@ export function Overview() {
 
         <div className='col-xl-6'>
           <ChartsWidget1 className='mb-5 mb-xxl-8' />
-
-          <ListsWidget5 className='mb-5 mb-xxl-8' />
 
           <ListsWidget2 className='mb-5 mb-xxl-8' />
         </div>
