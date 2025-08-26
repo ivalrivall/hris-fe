@@ -1,14 +1,14 @@
 import { FC } from 'react'
 import { useIntl } from 'react-intl'
 import { PageLink, PageTitle } from '../../../../_metronic/layout/core'
-import { Feeds } from '../../widgets/components/Feeds'
 import { ToolbarWrapper } from '../../../../_metronic/layout/components/toolbar'
 import { Content } from '../../../../_metronic/layout/components/content'
+import { AllAbsencesList } from '../components/AllAbsencesList'
 
 const widgetsBreadCrumbs: Array<PageLink> = [
   {
-    title: 'Widgets',
-    path: '/crafted/widgets/charts',
+    title: 'Dashboard',
+    path: '/dashboard',
     isSeparator: false,
     isActive: false,
   },
@@ -29,7 +29,7 @@ const DashboardPage: FC = () => (
         {/* begin::Col */}
         <div className='col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-md-5 mb-xl-10'>
           <PageTitle breadcrumbs={widgetsBreadCrumbs}>List Absence</PageTitle>
-          <Feeds />
+          <AllAbsencesList className='mb-5' title='All Users Absences' />
         </div>
         {/* end::Col */}
       </div>
