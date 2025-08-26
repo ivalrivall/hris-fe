@@ -20,7 +20,15 @@ export default defineConfig(({ mode }) => {
       port: Number(env.PORT) || 5173,
       host: false,        // allows access via localhost and network IP
       strictPort: true,  // fail instead of auto-switching ports
+      watch: {
+        usePolling: false, // disable polling
+      },
     },
+    esbuild: {
+      // Disable unnecessary transforms
+      legalComments: 'none',
+    },
+    clearScreen: false,
     build: {
       chunkSizeWarningLimit: 3000,
     },

@@ -5,13 +5,13 @@ import axios from 'axios';
 import { messaging, getToken, onMessage } from '../../../firebase';
 
 type Options = {
-  shouldSubscribe?: boolean; // e.g., user is ADMIN
-  topic?: string; // e.g., 'user.ADMIN'
+  shouldSubscribe?: boolean;
+  topic?: string;
 };
 
 const VAPID_KEY = import.meta.env.VITE_FIREBASE_VAPID_KEY as string | undefined;
 const API_URL = import.meta.env.VITE_APP_API_URL as string | undefined;
-const SUBSCRIBE_ENDPOINT = (import.meta.env.VITE_FCM_SUBSCRIBE_ENDPOINT as string | undefined) || (API_URL ? `${API_URL}/fcm/subscribe-topic` : undefined);
+const SUBSCRIBE_ENDPOINT = `${API_URL}/fcm/user.ADMIN/subscribe`;
 
 export const useFirebaseMessaging = (
   onReceive?: (payload: any) => void,
@@ -56,15 +56,27 @@ export const useFirebaseMessaging = (
     fetchTokenAndMaybeSubscribe();
 
     const unsubscribe = onMessage(messaging, (payload) => {
-      // Show a foreground notification
+      // Show a foreground notification (supports notification or data-only payloads)
       try {
-        const title = (payload as any)?.notification?.title || 'Notification';
-        const body = (payload as any)?.notification?.body || '';
+        const p: any = payload as any
+        const notif = p?.notification || {}
+        const data = p?.data || {}
+        const title = notif.title || data.title || 'Notification'
+        const body = notif.body || data.body || ''
+        const icon = notif.icon || data.icon || '/media/logos/dexa-group-splash.jpg'
+        const clickAction = notif.click_action || data.click_action || data.link
+
         if (Notification.permission === 'granted') {
-          new Notification(title, {
+          const n = new Notification(title, {
             body,
-            icon: '/media/logos/dexa-group-splash.jpg',
-          });
+            icon,
+            data: { clickAction },
+          })
+          if (clickAction) {
+            n.onclick = () => {
+              window.open(clickAction, '_self')
+            }
+          }
         }
       } catch {
         // ignore Notification API errors
