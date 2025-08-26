@@ -75,7 +75,7 @@ export const DefaultConfig: ILayout = {
     },
     toolbar: {
       componentName: 'toolbar',
-      display: true,
+      display: false,
       layout: 'reports',
       class: 'py-3 py-lg-6',
       container: 'fluid',
