@@ -1,12 +1,7 @@
 import { Link } from 'react-router-dom'
 import type { UserModel } from '@modules/auth/types/auth.types'
-import { AbsenceHistory } from '@metronic/partials/widgets'
+import { AbsenceHistory } from './AbsenceHistory'
 import { Content } from '@metronic/layout/components/content'
-/**
- * TODO
- * ringkasan kehadiran bulan ini (total hari kerja, masuk, tidak masuk, terlambat masuk, lembur)
- * riwayat absen 7 hari terakhir
- */
 export function Overview({ user }: { user?: UserModel }) {
   return (
     <Content>

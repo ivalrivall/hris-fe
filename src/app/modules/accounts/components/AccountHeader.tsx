@@ -102,7 +102,12 @@ const AccountHeader: FC<{ user?: UserModel }> = ({ user }) => {
     const m = totalMin % 60
     return h > 0 ? `${h}h ${m}m` : `${m}m`
   }
-  const elapsedFromInMs = firstIn ? Math.max(0, now.getTime() - eventTime(firstIn).getTime()) : 0
+  const elapsedFromInMs = firstIn
+    ? Math.max(
+        0,
+        (lastOut ? eventTime(lastOut).getTime() : now.getTime()) - eventTime(firstIn).getTime()
+      )
+    : 0
 
   return (
     <>

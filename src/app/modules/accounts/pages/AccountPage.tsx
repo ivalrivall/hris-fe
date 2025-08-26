@@ -2,7 +2,6 @@ import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { PageLink, PageTitle } from '../../../../_metronic/layout/core'
 import { Overview } from '../components/Overview'
-import { Settings } from '../components/settings/Settings'
 import { AccountHeader } from '../components/AccountHeader'
 import { useQuery } from '@tanstack/react-query'
 import { getUserByToken } from '../../../modules/auth/api'
@@ -60,15 +59,6 @@ const AccountPage: React.FC = () => {
               ) : (
                 <Overview user={user} />
               )}
-            </>
-          }
-        />
-        <Route
-          path='settings'
-          element={
-            <>
-              <PageTitle breadcrumbs={accountBreadCrumbs}>Settings</PageTitle>
-              <Settings />
             </>
           }
         />

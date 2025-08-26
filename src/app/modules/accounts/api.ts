@@ -1,4 +1,4 @@
-import { AbsenceModel } from './types/absence.types'
+import { AbsenceModel, AbsenceListResponse, listAbsenceOfUserQuery } from './types/absence.types'
 import http from '../../services/http'
 
 const ENDPOINTS = {
@@ -17,8 +17,8 @@ export function updateAbsence(status: string, id: string) {
     return http.put<{ status: boolean }>(`${ENDPOINTS.absence}/${id}`, { status })
 }
 
-export function listAbsence() {
-    return http.get<AbsenceModel[]>(ENDPOINTS.absence)
+export function listAbsenceOfUser(id: string, query: listAbsenceOfUserQuery) {
+    return http.get<AbsenceListResponse>(`${ENDPOINTS.absence}/user/${id}`, { params: query })
 }
 
 export function getTodayAbsence() {
