@@ -1,5 +1,4 @@
 
-import clsx from 'clsx'
 import { FC } from 'react'
 import { toAbsoluteUrl } from '@metronic/helpers'
 import { User } from '../../core/_models'

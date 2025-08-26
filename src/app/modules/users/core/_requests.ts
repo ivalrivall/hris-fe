@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AxiosResponse } from 'axios'
 import { Response, ID } from '@metronic/helpers'
 import { parseRequestQuery, QueryState } from '@metronic/helpers/crud-helper/helpers'

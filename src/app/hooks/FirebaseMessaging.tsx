@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/app/hooks/useFirebaseMessaging.ts
 import { useEffect, useRef } from 'react';
 import axios from 'axios';

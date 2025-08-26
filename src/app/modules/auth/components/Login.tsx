@@ -2,7 +2,6 @@
 import { useState } from 'react'
 import * as Yup from 'yup'
 import clsx from 'clsx'
-import { Link } from 'react-router-dom'
 import { useFormik } from 'formik'
 import { getUserByToken, login } from '../api'
 import { useAuth } from '../context/AuthContext'

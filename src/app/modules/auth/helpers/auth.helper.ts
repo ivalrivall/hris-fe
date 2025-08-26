@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AuthModel } from '../types/auth.types'
 
 // Keep only pure helpers here. Axios setup moved to src/app/services/http.ts
