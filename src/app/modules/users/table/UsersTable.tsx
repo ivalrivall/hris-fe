@@ -12,8 +12,11 @@ import { UserModel } from '../types'
 const UsersTable = () => {
   const users = useQueryResponseData()
   const isLoading = useQueryResponseLoading()
-  const data = useMemo(() => users, [users])
+
+  // Use the array from the API as-is (users is already UserModel[])
+  const data = useMemo<UserModel[]>(() => users ?? [], [users])
   const columns = useMemo(() => usersColumns, [])
+
   const table = useReactTable({
     data,
     columns,
@@ -38,9 +41,9 @@ const UsersTable = () => {
           </thead>
           <tbody className='text-gray-600 fw-bold'>
             {table.getRowModel().rows.length > 0 ? (
-              table.getRowModel().rows.map((row: Row<UserModel>) => {
-                return <CustomRow key={row.id} row={row} />
-              })
+              table.getRowModel().rows.map((row: Row<UserModel>) => (
+                <CustomRow key={row.id} row={row} />
+              ))
             ) : (
               <tr>
                 <td colSpan={7}>

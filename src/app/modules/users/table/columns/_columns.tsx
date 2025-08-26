@@ -1,14 +1,13 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { UserInfoCell } from './UserInfoCell'
-import { UserLastLoginCell } from './UserLastLoginCell'
-import { UserTwoStepsCell } from './UserTwoStepsCell'
+import { UserCreatedAtCell } from './UserCreatedAtCell'
 import { UserActionsCell } from './UserActionsCell'
-import { UserSelectionCell } from './UserSelectionCell'
 import { UserCustomHeader } from './UserCustomHeader'
-import { UserSelectionHeader } from './UserSelectionHeader'
-import { User } from '../../core/_models'
+import { UserModel } from '@modules/users/types'
+import { UserPositionCell } from './UserPositionCell'
+import { UserRoleCell } from './UserRoleCell'
 
-const usersColumns: ColumnDef<User>[] = [
+const usersColumns: ColumnDef<UserModel>[] = [
   {
     header: (props) => <UserCustomHeader tableProps={props} title='Name' className='min-w-125px' />,
     id: 'name',
@@ -17,26 +16,21 @@ const usersColumns: ColumnDef<User>[] = [
   {
     header: (props) => <UserCustomHeader tableProps={props} title='Job Position' className='min-w-125px' />,
     accessorKey: 'position',
+    cell: (info) => <UserPositionCell position={info.row.original.position} />,
   },
   {
     header: (props) => (
-      <UserCustomHeader tableProps={props} title='Last check in' className='min-w-125px' />
+      <UserCustomHeader tableProps={props} title='Role' className='min-w-125px' />
     ),
-    id: 'last_login',
-    cell: (info) => <UserLastLoginCell last_login={info.row.original.last_login} />,
-  },
-  {
-    header: (props) => (
-      <UserCustomHeader tableProps={props} title='Last checkout' className='min-w-125px' />
-    ),
-    id: 'two_steps',
-    cell: (info) => <UserTwoStepsCell two_steps={info.row.original.two_steps} />,
+    id: 'role',
+    cell: (info) => <UserRoleCell role={info.row.original.role} />,
   },
   {
     header: (props) => (
       <UserCustomHeader tableProps={props} title='Joined day' className='min-w-125px' />
     ),
-    accessorKey: 'joined_day',
+    accessorKey: 'created_at',
+    cell: (info) => <UserCreatedAtCell created_at={info.row.original.createdAt} />,
   },
   {
     header: (props) => (

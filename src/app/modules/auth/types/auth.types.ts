@@ -19,3 +19,8 @@ export interface UserModel {
   position: string
   auth?: AuthModel
 }
+
+export enum RoleType {
+  USER = 'USER',
+  ADMIN = 'ADMIN',
+}

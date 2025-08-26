@@ -1,18 +1,18 @@
 import clsx from 'clsx'
-import {FC, useMemo} from 'react'
-import {initialQueryState} from '../../../../../_metronic/helpers'
-import {useQueryRequest} from '../../core/QueryRequestProvider'
-import {User} from '../../core/_models'
-import {HeaderContext} from "@tanstack/react-table";
+import { FC, useMemo } from 'react'
+import { initialQueryState } from '@metronic/helpers'
+import { useQueryRequest } from '../../core/QueryRequestProvider'
+import { HeaderContext } from "@tanstack/react-table";
+import { UserModel } from '@modules/users/types'
 
 type Props = {
   className?: string
   title?: string
-  tableProps: HeaderContext<User, unknown>
+  tableProps: HeaderContext<UserModel, unknown>
 }
-const UserCustomHeader: FC<Props> = ({className, title, tableProps}) => {
+const UserCustomHeader: FC<Props> = ({ className, title, tableProps }) => {
   const id = tableProps.column.id;
-  const {state, updateState} = useQueryRequest()
+  const { state, updateState } = useQueryRequest()
 
   const isSelectedForSorting = useMemo(() => {
     return state.sort && state.sort === id
@@ -27,19 +27,19 @@ const UserCustomHeader: FC<Props> = ({className, title, tableProps}) => {
 
     if (!isSelectedForSorting) {
       // enable sort asc
-      updateState({sort: id, order: 'asc', ...initialQueryState})
+      updateState({ sort: id, order: 'asc', ...initialQueryState })
       return
     }
 
     if (isSelectedForSorting && order !== undefined) {
       if (order === 'asc') {
         // enable sort desc
-        updateState({sort: id, order: 'desc', ...initialQueryState})
+        updateState({ sort: id, order: 'desc', ...initialQueryState })
         return
       }
 
       // disable sort
-      updateState({sort: undefined, order: undefined, ...initialQueryState})
+      updateState({ sort: undefined, order: undefined, ...initialQueryState })
     }
   }
 
@@ -49,7 +49,7 @@ const UserCustomHeader: FC<Props> = ({className, title, tableProps}) => {
         className,
         isSelectedForSorting && order !== undefined && `table-sort-${order}`
       )}
-      style={{cursor: 'pointer'}}
+      style={{ cursor: 'pointer' }}
       onClick={sortColumn}
     >
       {title}
@@ -57,4 +57,4 @@ const UserCustomHeader: FC<Props> = ({className, title, tableProps}) => {
   )
 }
 
-export {UserCustomHeader}
+export { UserCustomHeader }

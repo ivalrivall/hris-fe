@@ -1,9 +1,9 @@
 
 import clsx from 'clsx'
-import {useQueryResponseLoading, useQueryResponsePagination} from '../../core/QueryResponseProvider'
-import {useQueryRequest} from '../../core/QueryRequestProvider'
-import {PaginationState} from '../../../../../_metronic/helpers'
-import {useMemo} from 'react'
+import { useQueryResponseLoading, useQueryResponsePagination } from '../../core/QueryResponseProvider'
+import { useQueryRequest } from '../../core/QueryRequestProvider'
+import { PaginationState } from '@metronic/helpers'
+import { useMemo } from 'react'
 
 const mappedLabel = (label: string): string => {
   if (label === '&laquo; Previous') {
@@ -20,13 +20,13 @@ const mappedLabel = (label: string): string => {
 const UsersListPagination = () => {
   const pagination = useQueryResponsePagination()
   const isLoading = useQueryResponseLoading()
-  const {updateState} = useQueryRequest()
+  const { updateState } = useQueryRequest()
   const updatePage = (page: number | undefined | null) => {
     if (!page || isLoading || pagination.page === page) {
       return
     }
 
-    updateState({page, items_per_page: pagination.items_per_page || 10})
+    updateState({ page, items_per_page: pagination.items_per_page || 10 })
   }
 
   const PAGINATION_PAGES_COUNT = 5
@@ -43,9 +43,9 @@ const UsersListPagination = () => {
       url: string | null
       page: number | null
     }> = []
-    const previousLink: {label: string; active: boolean; url: string | null; page: number | null} =
+    const previousLink: { label: string; active: boolean; url: string | null; page: number | null } =
       scopedLinks.shift()!
-    const nextLink: {label: string; active: boolean; url: string | null; page: number | null} =
+    const nextLink: { label: string; active: boolean; url: string | null; page: number | null } =
       scopedLinks.pop()!
 
     const halfOfPagesCount = Math.floor(PAGINATION_PAGES_COUNT / 2)
@@ -103,13 +103,13 @@ const UsersListPagination = () => {
                 disabled: isLoading || pagination.page === 1,
               })}
             >
-              <a onClick={() => updatePage(1)} style={{cursor: 'pointer'}} className='page-link'>
+              <a onClick={() => updatePage(1)} style={{ cursor: 'pointer' }} className='page-link'>
                 First
               </a>
             </li>
             {paginationLinks
               ?.map((link) => {
-                return {...link, label: mappedLabel(link.label)}
+                return { ...link, label: mappedLabel(link.label) }
               })
               .map((link) => (
                 <li
@@ -127,7 +127,7 @@ const UsersListPagination = () => {
                       'me-5': link.label === 'Previous',
                     })}
                     onClick={() => updatePage(link.page)}
-                    style={{cursor: 'pointer'}}
+                    style={{ cursor: 'pointer' }}
                   >
                     {mappedLabel(link.label)}
                   </a>
@@ -140,7 +140,7 @@ const UsersListPagination = () => {
             >
               <a
                 onClick={() => updatePage((pagination.links?.length || 3) - 2)}
-                style={{cursor: 'pointer'}}
+                style={{ cursor: 'pointer' }}
                 className='page-link'
               >
                 Last
@@ -153,4 +153,4 @@ const UsersListPagination = () => {
   )
 }
 
-export {UsersListPagination}
+export { UsersListPagination }

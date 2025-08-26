@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useMemo, useState } from 'react'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import { isNotEmpty, toAbsoluteUrl } from '@metronic/helpers'
@@ -6,7 +6,7 @@ import { initialUser, User } from '../core/_models'
 import clsx from 'clsx'
 import { useListView } from '../core/ListViewProvider'
 import { UsersListLoading } from '../components/loading/UsersListLoading'
-import { createUser, updateUser } from '../core/_requests'
+import { createUser as apiCreateUser, updateUser as apiUpdateUser, updateUserAvatar as apiUpdateUserAvatar } from '../api'
 import { useQueryResponse } from '../core/QueryResponseProvider'
 
 type Props = {
@@ -26,24 +26,35 @@ const editUserSchema = Yup.object().shape({
     .required('Name is required'),
   phone: Yup.string().nullable(),
   password: Yup.string().min(6, 'Minimum 6 characters').notRequired(),
-  position: Yup.string().min(3, 'Minimum 3 characters')
-    .max(70, 'Maximum 70 characters').required('Position is required'),
+  password_confirmation: Yup.string()
+    .test('passwords-match', 'Passwords must match', function (value) {
+      const { password } = this.parent as { password?: string }
+      if (!password) return true
+      return value === password
+    })
+    .notRequired(),
+  position: Yup.string()
+    .min(3, 'Minimum 3 characters')
+    .max(70, 'Maximum 70 characters')
+    .required('Position is required'),
 })
 
 const UserEditModalForm: FC<Props> = ({ user, isUserLoading }) => {
   const { setItemIdForUpdate } = useListView()
   const { refetch } = useQueryResponse()
 
-  const [userForEdit] = useState<User>({
+  const userForEdit = useMemo<User>(() => ({
     ...user,
-    avatar: user.avatar || initialUser.avatar,
-    role: user.role || initialUser.role,
-    position: user.position || initialUser.position,
-    name: user.name || initialUser.name,
-    email: user.email || initialUser.email,
-    phone: user.phone || initialUser.phone,
-    password: user.password || initialUser.password,
-  })
+    avatar: user.avatar, 
+    role: user.role ?? initialUser.role,
+    position: user.position ?? initialUser.position,
+    name: user.name ?? initialUser.name,
+    email: user.email ?? initialUser.email,
+    phone: user.phone ?? initialUser.phone,
+    // Never prefill password fields for security
+    password: '',
+    password_confirmation: '',
+  }), [user])
 
   const cancel = (withRefresh?: boolean) => {
     if (withRefresh) {
@@ -53,27 +64,66 @@ const UserEditModalForm: FC<Props> = ({ user, isUserLoading }) => {
   }
 
   const blankImg = toAbsoluteUrl('media/svg/avatars/blank.svg')
-  const userAvatarImg = toAbsoluteUrl(`media/${userForEdit.avatar}`)
+  const userAvatarImg = userForEdit.avatar && userForEdit.avatar.length > 0
+    ? userForEdit.avatar
+    : blankImg
+  const [avatarFile, setAvatarFile] = useState<File | null>(null)
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
+  const displayAvatarImg = avatarPreview ?? userAvatarImg
 
   const formik = useFormik({
     initialValues: userForEdit,
+    enableReinitialize: true,
     validationSchema: editUserSchema,
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true)
       try {
         const payload: User = { ...values }
-        if (!payload.password) {
-          delete (payload as any).password
-        }
-        if (isNotEmpty(payload.id)) {
-          await updateUser(payload)
+
+        // Create
+        if (!isNotEmpty(payload.id)) {
+          if (payload.password_confirmation == payload.password) {
+            delete payload.password_confirmation
+            await apiCreateUser(
+              payload.email ?? '',
+              payload.name ?? '',
+              payload.position ?? '',
+              payload.phone ?? '',
+              payload.password ?? '',
+            )
+            // If create API returns the new user id and you want to upload avatar on create too,
+            // you can add logic here to upload avatarFile with that id
+          }
         } else {
-          await createUser(payload)
+          // Update
+          const id = String(payload.id)
+          const updateData: {
+            name?: string
+            email?: string
+            position?: string
+            phone?: string
+            password?: string
+            role?: string
+          } = {
+            name: payload.name,
+            email: payload.email,
+            position: payload.position,
+            phone: payload.phone,
+            role: payload.role,
+          }
+          if (payload.password) {
+            if (payload.password == payload.password_confirmation) {
+              delete payload.password_confirmation
+              updateData.password = payload.password
+            }
+          }
+          // If avatar selected, send as multipart along with fields; otherwise regular JSON
+          await apiUpdateUser(id, updateData, avatarFile ?? undefined)
         }
       } catch (ex) {
         console.error(ex)
       } finally {
-        setSubmitting(true)
+        setSubmitting(false)
         cancel(true)
       }
     },
@@ -108,7 +158,7 @@ const UserEditModalForm: FC<Props> = ({ user, isUserLoading }) => {
               {/* begin::Preview existing avatar */}
               <div
                 className='image-input-wrapper w-125px h-125px'
-                style={{ backgroundImage: `url('${userAvatarImg}')` }}
+                style={{ backgroundImage: `url('${displayAvatarImg}')` }}
               ></div>
               {/* end::Preview existing avatar */}
 
@@ -121,7 +171,36 @@ const UserEditModalForm: FC<Props> = ({ user, isUserLoading }) => {
               >
                 <i className='bi bi-pencil-fill fs-7'></i>
 
-                <input type='file' name='avatar' accept='.png, .jpg, .jpeg' />
+                <input
+                  type='file'
+                  name='avatar'
+                  accept='.png, .jpg, .jpeg'
+                  onChange={async (e) => {
+                    const file = e.currentTarget.files?.[0] ?? null
+                    setAvatarFile(file)
+
+                    // Preview locally
+                    if (file) {
+                      const reader = new FileReader()
+                      reader.onload = () => setAvatarPreview(reader.result as string)
+                      reader.readAsDataURL(file)
+                    } else {
+                      setAvatarPreview(null)
+                    }
+
+                    // Upload immediately for existing users
+                    try {
+                      const id = userForEdit.id
+                      if (file && id) {
+                        await apiUpdateUserAvatar(String(id), file)
+                        // Optionally refresh the list after successful upload
+                        refetch()
+                      }
+                    } catch (err) {
+                      console.error('Failed to upload avatar', err)
+                    }
+                  }}
+                />
                 <input type='hidden' name='avatar_remove' />
               </label>
               {/* end::Label */}
@@ -270,6 +349,38 @@ const UserEditModalForm: FC<Props> = ({ user, isUserLoading }) => {
               </div>
             )}
             <div className='form-text'>Leave blank to keep the current password.</div>
+          </div>
+          {/* end::Input group */}
+
+          {/* begin::Input group */}
+          <div className='fv-row mb-7'>
+            <label className='fw-bold fs-6 mb-2'>Confirm Password</label>
+            <input
+              placeholder='Confirm password'
+              {...formik.getFieldProps('password_confirmation')}
+              className={clsx(
+                'form-control form-control-solid mb-3 mb-lg-0',
+                {
+                  'is-invalid':
+                    formik.touched.password_confirmation &&
+                    formik.errors.password_confirmation,
+                },
+                {
+                  'is-valid':
+                    formik.touched.password_confirmation &&
+                    !formik.errors.password_confirmation,
+                }
+              )}
+              type='password'
+              name='password_confirmation'
+              autoComplete='new-password'
+              disabled={formik.isSubmitting || isUserLoading}
+            />
+            {formik.touched.password_confirmation && formik.errors.password_confirmation && (
+              <div className='fv-plugins-message-container'>
+                <span role='alert'>{formik.errors.password_confirmation as string}</span>
+              </div>
+            )}
           </div>
           {/* end::Input group */}
 

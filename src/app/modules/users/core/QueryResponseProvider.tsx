@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react-hooks/exhaustive-deps */
-import {FC, useContext, useState, useEffect, useMemo} from 'react'
-import {useQuery} from '@tanstack/react-query'
+import { FC, useContext, useState, useEffect, useMemo } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import {
   createResponseContext,
   initialQueryResponse,
@@ -11,13 +11,13 @@ import {
   stringifyRequestQuery,
   WithChildren,
 } from '@metronic/helpers'
-import {getUsers} from './_requests'
-import {useQueryRequest} from './QueryRequestProvider'
+import { useQueryRequest } from './QueryRequestProvider'
+import { getUsers } from './_requests'
 import { UserModel } from '../types'
 
 const QueryResponseContext = createResponseContext<UserModel[]>(initialQueryResponse)
-const QueryResponseProvider: FC<WithChildren> = ({children}) => {
-  const {state} = useQueryRequest()
+const QueryResponseProvider: FC<WithChildren> = ({ children }) => {
+  const { state } = useQueryRequest()
   const [query, setQuery] = useState<string>(stringifyRequestQuery(state))
   const updatedQuery = useMemo(() => stringifyRequestQuery(state), [state])
 
@@ -34,7 +34,7 @@ const QueryResponseProvider: FC<WithChildren> = ({children}) => {
   });
 
   return (
-    <QueryResponseContext.Provider value={{isLoading: isFetching, refetch, response, query}}>
+    <QueryResponseContext.Provider value={{ isLoading: isFetching, refetch, response, query }}>
       {children}
     </QueryResponseContext.Provider>
   )
@@ -43,7 +43,7 @@ const QueryResponseProvider: FC<WithChildren> = ({children}) => {
 const useQueryResponse = () => useContext(QueryResponseContext)
 
 const useQueryResponseData = () => {
-  const {response} = useQueryResponse()
+  const { response } = useQueryResponse()
   if (!response) {
     return []
   }
@@ -57,7 +57,7 @@ const useQueryResponsePagination = () => {
     ...initialQueryState,
   }
 
-  const {response} = useQueryResponse()
+  const { response } = useQueryResponse()
   if (!response || !response.payload || !response.payload.pagination) {
     return defaultPaginationState
   }
@@ -66,7 +66,7 @@ const useQueryResponsePagination = () => {
 }
 
 const useQueryResponseLoading = (): boolean => {
-  const {isLoading} = useQueryResponse()
+  const { isLoading } = useQueryResponse()
   return isLoading
 }
 

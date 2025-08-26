@@ -1,4 +1,5 @@
 export * from './types/auth.types'
+export { RoleType } from './types/auth.types'
 export * from './context/AuthContext'
 export * from './context/AuthInit'
 export * from './helpers/auth.helper'

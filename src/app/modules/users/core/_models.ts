@@ -1,4 +1,5 @@
-import {ID, Response} from '../../../../_metronic/helpers'
+import { ID, Response } from '@metronic/helpers'
+import { RoleType } from '@modules/auth'
 export type User = {
   id?: ID
   name?: string
@@ -6,12 +7,11 @@ export type User = {
   email?: string
   phone?: string
   password?: string
+  password_confirmation?: string
   position?: string
   role?: string
   last_login?: string
-  two_steps?: boolean
   joined_day?: string
-  online?: boolean
   initials?: {
     label: string
     state: string
@@ -21,11 +21,12 @@ export type User = {
 export type UsersQueryResponse = Response<Array<User>>
 
 export const initialUser: User = {
-  avatar: 'avatars/300-6.jpg',
-  position: 'Art Director',
-  role: 'Administrator',
+  avatar: '',
+  position: '',
+  role: RoleType.USER,
   name: '',
   email: '',
   phone: '',
   password: '',
+  password_confirmation: '',
 }

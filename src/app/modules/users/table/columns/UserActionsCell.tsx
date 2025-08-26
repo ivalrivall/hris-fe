@@ -1,18 +1,18 @@
-import {FC, useEffect} from 'react'
-import {useMutation, useQueryClient} from '@tanstack/react-query'
-import {MenuComponent} from '../../../../../_metronic/assets/ts/components'
-import {ID, KTIcon, QUERIES} from '../../../../../_metronic/helpers'
-import {useListView} from '../../core/ListViewProvider'
-import {useQueryResponse} from '../../core/QueryResponseProvider'
-import {deleteUser} from '../../core/_requests'
+import { FC, useEffect } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { MenuComponent } from '@metronic/assets/ts/components'
+import { ID, KTIcon, QUERIES } from '@metronic/helpers'
+import { useListView } from '../../core/ListViewProvider'
+import { useQueryResponse } from '../../core/QueryResponseProvider'
+import { deleteUser } from '../../core/_requests'
 
 type Props = {
   id: ID
 }
 
-const UserActionsCell: FC<Props> = ({id}) => {
-  const {setItemIdForUpdate} = useListView()
-  const {query} = useQueryResponse()
+const UserActionsCell: FC<Props> = ({ id }) => {
+  const { setItemIdForUpdate } = useListView()
+  const { query } = useQueryResponse()
   const queryClient = useQueryClient()
 
   useEffect(() => {
@@ -26,9 +26,8 @@ const UserActionsCell: FC<Props> = ({id}) => {
   const deleteItem = useMutation({
     mutationFn: () => deleteUser(id),
     onSuccess: () => {
-      // ✅ update detail view directly
       queryClient.invalidateQueries({
-          queryKey: [`${QUERIES.USERS_LIST}-${query}`]
+        queryKey: [`${QUERIES.USERS_LIST}-${query}`]
       })
     }
   })
@@ -72,4 +71,4 @@ const UserActionsCell: FC<Props> = ({id}) => {
   </>;
 }
 
-export {UserActionsCell}
+export { UserActionsCell }
