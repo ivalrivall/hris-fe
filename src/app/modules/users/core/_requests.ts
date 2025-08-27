@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AxiosResponse } from 'axios'
-import { Response, ID } from '@metronic/helpers'
-import { parseRequestQuery, QueryState } from '@metronic/helpers/crud-helper/helpers'
+import { Response, ID, QueryState, parseRequestQuery } from '@metronic/helpers'
 import { User } from './_models'
 import { listUser } from '../api'
 import { UserModel, UserListResponse, listUserQuery } from '../types'

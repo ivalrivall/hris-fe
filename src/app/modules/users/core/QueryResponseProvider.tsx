@@ -15,7 +15,7 @@ import { useQueryRequest } from './QueryRequestProvider'
 import { getUsers } from './_requests'
 import { UserModel } from '../types'
 
-const QueryResponseContext = createResponseContext<UserModel[]>(initialQueryResponse)
+const QueryResponseContext = createResponseContext<UserModel>(initialQueryResponse)
 const QueryResponseProvider: FC<WithChildren> = ({ children }) => {
   const { state } = useQueryRequest()
   const [query, setQuery] = useState<string>(stringifyRequestQuery(state))

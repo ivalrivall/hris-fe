@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { flexRender, Header } from '@tanstack/react-table';
-import { User } from '../../core/_models';
+import { UserModel } from '@modules/users/types';
 
 type Props = {
-  header: Header<User, unknown>;
+  header: Header<UserModel, unknown>;
 };
 
 const CustomHeaderColumn: FC<Props> = ({ header }) => {
