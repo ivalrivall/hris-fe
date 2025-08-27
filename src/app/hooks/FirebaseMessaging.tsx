@@ -32,7 +32,15 @@ export const useFirebaseMessaging = (
           return;
         }
 
-        const token = await getToken(messaging, { vapidKey: VAPID_KEY });
+        // Ensure the Firebase Messaging service worker is registered and use it to get token
+        let swReg: ServiceWorkerRegistration | undefined
+        if ('serviceWorker' in navigator) {
+          swReg = (await navigator.serviceWorker.getRegistration('/firebase-messaging-sw.js')) ||
+            (await navigator.serviceWorker.register('/firebase-messaging-sw.js'))
+          console.log('Service Worker registered for FCM:', swReg)
+        }
+
+        const token = await getToken(messaging, { vapidKey: VAPID_KEY, serviceWorkerRegistration: swReg }) ;
         if (!token) return;
 
         // Subscribe token to topic via backend if requested
@@ -55,7 +63,8 @@ export const useFirebaseMessaging = (
 
     fetchTokenAndMaybeSubscribe();
 
-    const unsubscribe = onMessage(messaging, (payload) => {
+    const messageForeground = onMessage(messaging, (payload) => {
+      console.log('on message', payload)
       // Show a foreground notification (supports notification or data-only payloads)
       try {
         const p: any = payload as any
@@ -84,6 +93,6 @@ export const useFirebaseMessaging = (
       onReceive?.(payload as any);
     });
 
-    return () => unsubscribe();
+    return () => messageForeground();
   }, [options?.shouldSubscribe, options?.topic, onReceive]);
 };
