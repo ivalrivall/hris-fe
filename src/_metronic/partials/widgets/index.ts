@@ -1,5 +1,4 @@
 // charts
-export * from '../../../app/modules/dashboard/components/FeedsWidget2'
 export * from './feeds/FeedsWidget3'
 export * from './feeds/FeedsWidget4'
 export * from './feeds/FeedsWidget5'
@@ -71,7 +70,6 @@ export * from './engage/EngageWidget2'
 export * from './engage/EngageWidget3'
 
 // feeds
-export * from '../../../app/modules/dashboard/components/FeedsWidget2'
 export * from './feeds/FeedsWidget3'
 export * from './feeds/FeedsWidget4'
 

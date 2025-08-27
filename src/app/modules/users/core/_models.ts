@@ -10,12 +10,6 @@ export type User = {
   password_confirmation?: string
   position?: string
   role?: string
-  last_login?: string
-  joined_day?: string
-  initials?: {
-    label: string
-    state: string
-  }
 }
 
 export type UsersQueryResponse = Response<Array<User>>
