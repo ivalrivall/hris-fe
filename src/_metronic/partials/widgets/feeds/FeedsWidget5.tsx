@@ -90,30 +90,6 @@ const FeedsWidget5: FC<Props> = ({className}) => {
           {/* end::Toolbar */}
         </div>
         {/* end::Post */}
-
-        {/* begin::Separator */}
-        <div className='separator mb-4'></div>
-        {/* end::Separator */}
-
-        {/* begin::Reply input */}
-        <form className='position-relative mb-6'>
-          <textarea
-            className='form-control border-0 p-0 pe-10 resize-none min-h-25px'
-            rows={1}
-            placeholder='Reply..'
-          ></textarea>
-
-          <div className='position-absolute top-0 end-0 me-n5'>
-            <span className='btn btn-icon btn-sm btn-active-color-primary pe-0 me-2'>
-              <KTIcon iconName='paper-clip' className='fs-3 mb-3' />
-            </span>
-
-            <span className='btn btn-icon btn-sm btn-active-color-primary ps-0'>
-              <KTIcon iconName='geolocation' className='fs-2 mb-3' />
-            </span>
-          </div>
-        </form>
-        {/* edit::Reply input */}
       </div>
       {/* end::Body */}
     </div>

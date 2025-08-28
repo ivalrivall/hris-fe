@@ -1,13 +1,12 @@
- 
+
 import clsx from 'clsx'
-import {Link} from 'react-router-dom'
-import {KTIcon, toAbsoluteUrl} from '../../../helpers'
-import {LayoutSetup, useLayout} from '../../core'
-import {Header} from './Header'
-import {Navbar} from './Navbar'
+import { Link } from 'react-router-dom'
+import { KTIcon, toAbsoluteUrl } from '../../../helpers'
+import { LayoutSetup, useLayout } from '../../core'
+import { Navbar } from './Navbar'
 
 export function HeaderWrapper() {
-  const {config, classes} = useLayout()
+  const { config, classes } = useLayout()
   if (config.app?.header?.default?.container === 'fluid') {
     LayoutSetup.classes.headerContainer.push("container-fluid");
   } else {
@@ -50,11 +49,11 @@ export function HeaderWrapper() {
                 </div>
                 <div className='d-flex align-items-center flex-grow-1 flex-lg-grow-0'>
                   <Link to='/dashboard' className='d-lg-none'>
-                      <img
-                        alt='Logo'
-                        src={toAbsoluteUrl('media/logos/default-small.svg')}
-                        className='h-30px'
-                      />
+                    <img
+                      alt='Logo'
+                      src={toAbsoluteUrl('media/logos/default-small.svg')}
+                      className='h-30px'
+                    />
                   </Link>
                 </div>
               </div>
@@ -109,7 +108,7 @@ export function HeaderWrapper() {
                 data-kt-swapper-mode="{default: 'append', lg: 'prepend'}"
                 data-kt-swapper-parent="{default: '#root', lg: '#kt_app_header_wrapper'}"
               >
-                <Header />
+                {/* <Header /> */}
               </div>
             )}
           <Navbar />

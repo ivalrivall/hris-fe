@@ -1,32 +1,20 @@
-import {FC} from 'react'
-import {useLang} from './Metronici18n'
-import {IntlProvider} from 'react-intl'
+import { FC } from 'react'
+import { useLang } from './Metronici18n'
+import { IntlProvider } from 'react-intl'
 import '@formatjs/intl-relativetimeformat/polyfill'
 import '@formatjs/intl-relativetimeformat/locale-data/en'
-import '@formatjs/intl-relativetimeformat/locale-data/de'
-import '@formatjs/intl-relativetimeformat/locale-data/es'
-import '@formatjs/intl-relativetimeformat/locale-data/fr'
-import '@formatjs/intl-relativetimeformat/locale-data/ja'
-import '@formatjs/intl-relativetimeformat/locale-data/zh'
+import '@formatjs/intl-relativetimeformat/locale-data/id'
 
-import deMessages from './messages/de.json'
 import enMessages from './messages/en.json'
-import esMessages from './messages/es.json'
-import frMessages from './messages/fr.json'
-import jaMessages from './messages/ja.json'
-import zhMessages from './messages/zh.json'
-import {WithChildren} from '../helpers'
+import idMessages from './messages/id.json'
+import { WithChildren } from '../helpers'
 
 const allMessages = {
-  de: deMessages,
   en: enMessages,
-  es: esMessages,
-  fr: frMessages,
-  ja: jaMessages,
-  zh: zhMessages,
+  id: idMessages,
 }
 
-const I18nProvider: FC<WithChildren> = ({children}) => {
+const I18nProvider: FC<WithChildren> = ({ children }) => {
   const locale = useLang()
   const messages = allMessages[locale]
 
@@ -37,4 +25,4 @@ const I18nProvider: FC<WithChildren> = ({children}) => {
   )
 }
 
-export {I18nProvider}
+export { I18nProvider }

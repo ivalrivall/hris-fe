@@ -1,6 +1,7 @@
 import {Dispatch, SetStateAction} from 'react'
 
-export type ID = undefined | null | number
+// Allow UUID strings in IDs to support backend responses
+export type ID = undefined | null | number | string
 
 export type PaginationState = {
   page: number

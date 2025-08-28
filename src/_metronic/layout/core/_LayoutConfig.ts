@@ -21,7 +21,7 @@ export const DefaultConfig: ILayout = {
     },
     header: {
       componentName: 'header',
-      display: false,
+      display: true,
       default: {
         container: 'fluid',
         containerClass: 'd-flex align-items-stretch justify-content-between',
@@ -32,7 +32,7 @@ export const DefaultConfig: ILayout = {
         content: 'menu',
         menu: {
           display: true,
-          iconType: 'svg',
+          iconType: 'font',
         },
       },
     },
@@ -69,13 +69,13 @@ export const DefaultConfig: ILayout = {
           },
         },
         menu: {
-          iconType: 'svg',
+          iconType: 'font',
         },
       },
     },
     toolbar: {
       componentName: 'toolbar',
-      display: true,
+      display: false,
       layout: 'reports',
       class: 'py-3 py-lg-6',
       container: 'fluid',

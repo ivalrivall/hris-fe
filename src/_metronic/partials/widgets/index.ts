@@ -1,5 +1,4 @@
 // charts
-export * from './feeds/FeedsWidget2'
 export * from './feeds/FeedsWidget3'
 export * from './feeds/FeedsWidget4'
 export * from './feeds/FeedsWidget5'
@@ -26,7 +25,7 @@ export * from './lists/ListsWidget1'
 export * from './lists/ListsWidget2'
 export * from './lists/ListsWidget3'
 export * from './lists/ListsWidget4'
-export * from './lists/ListsWidget5'
+export * from '../../../app/modules/accounts/components/AbsenceHistory'
 export * from './lists/ListsWidget6'
 export * from './lists/ListsWidget7'
 export * from './lists/ListsWidget8'
@@ -71,7 +70,6 @@ export * from './engage/EngageWidget2'
 export * from './engage/EngageWidget3'
 
 // feeds
-export * from './feeds/FeedsWidget2'
 export * from './feeds/FeedsWidget3'
 export * from './feeds/FeedsWidget4'
 
