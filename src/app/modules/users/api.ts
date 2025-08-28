@@ -50,7 +50,6 @@ export function updateUser(
 ) {
     if (file) {
       const form = new FormData()
-      // Append scalar fields if present
       Object.entries(data).forEach(([key, value]) => {
         if (value !== undefined && value !== null && value !== '') {
           form.append(key, String(value))

@@ -1,4 +1,3 @@
-// src/app/modules/auth/context/AuthContext.tsx
 import { createContext, useState, useContext, Dispatch, SetStateAction, FC } from 'react'
 import { AuthModel, UserModel } from '@modules/auth/types/auth.types'
 import * as authHelper from '../helpers/auth.helper'
@@ -38,7 +37,6 @@ export const AuthProvider: FC<WithChildren> = ({ children }) => {
 
   const logout = async () => {
     try {
-      // Best-effort server-side invalidation; ignore failures
       await logoutApi().catch(() => {})
     } finally {
       saveAuth(undefined)

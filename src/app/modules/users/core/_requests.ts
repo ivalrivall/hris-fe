@@ -5,7 +5,6 @@ import { User } from './_models'
 import { listUser } from '../api'
 import { UserModel, UserListResponse, listUserQuery } from '../types'
 
-// Map QueryState from Metronic helpers to our backend listUserQuery
 function mapQueryToApi(state: QueryState): listUserQuery {
   const order = state.order ? (state.order.toUpperCase() === 'DESC' ? 'DESC' : 'ASC') : undefined
   return {
@@ -13,11 +12,9 @@ function mapQueryToApi(state: QueryState): listUserQuery {
     take: state.items_per_page,
     order,
     q: state.search,
-    // startDate/endDate can be added here if present in state.filter
   }
 }
 
-// Normalize backend pagination meta to Metronic PaginationState with minimal links
 function buildPagination(meta: UserListResponse['meta'], fallback: QueryState) {
   const currentPage = meta.page ?? fallback.page ?? 1
   const take = meta.take ?? fallback.items_per_page ?? 10
@@ -33,14 +30,13 @@ function buildPagination(meta: UserListResponse['meta'], fallback: QueryState) {
   return { page: currentPage, items_per_page, links }
 }
 
-// Fetch users using the new API and adapt to Metronic Response shape used by providers
 const getUsers = async (query: string): Promise<Response<Array<UserModel>>> => {
   const state = parseRequestQuery(query) as QueryState
   const params = mapQueryToApi(state)
   const resp: AxiosResponse<UserListResponse> = await listUser(params)
   const { data, meta } = resp.data
   return {
-    data, // keep API's UserModel[]; table maps it to core User later
+    data,
     payload: {
       pagination: buildPagination(meta, state),
     },
@@ -49,7 +45,6 @@ const getUsers = async (query: string): Promise<Response<Array<UserModel>>> => {
 
 import { createUser as apiCreateUser, getUserById as apiGetUserById, updateUser as apiUpdateUser, deleteUser as apiDeleteUser } from '../api'
 
-// Map API UserModel to core User shape used by forms/UI
 function mapToCoreUser(u: UserModel): User {
   return {
     id: u.id,
@@ -57,16 +52,13 @@ function mapToCoreUser(u: UserModel): User {
     email: u.email,
     position: u.position,
     role: typeof u.role === 'string' ? u.role : String(u.role),
-    // Optional fields not provided by API remain undefined and will be filled by initialUser where needed
   }
 }
 
-// The following functions now use the real API
 const getUserById = async (_id: ID): Promise<User | undefined> => {
   if (_id == null) return undefined
   const id = String(_id)
   const resp = await apiGetUserById(id)
-  // API shape: direct UserModel
   return mapToCoreUser(resp.data)
 }
 
@@ -75,7 +67,6 @@ const createUser = async (_user: User): Promise<User | undefined> => {
   const password = _user.password || ''
   const password_confirmation = password || ''
   const resp = await apiCreateUser(_user.email, _user.name, _user.position, password, password_confirmation)
-  // Some backends return created user; if not, simply return minimal core user
   const created = (resp.data as any)?.user as UserModel | undefined
   return created ? mapToCoreUser(created) : { id: undefined, ..._user }
 }

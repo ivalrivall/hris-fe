@@ -20,25 +20,21 @@ const UserCustomHeader: FC<Props> = ({ className, title, tableProps }) => {
   const order: 'asc' | 'desc' | undefined = useMemo(() => state.order, [state])
 
   const sortColumn = () => {
-    // avoid sorting for these columns
     if (id === 'actions' || id === 'selection') {
       return
     }
 
     if (!isSelectedForSorting) {
-      // enable sort asc
       updateState({ sort: id, order: 'asc', ...initialQueryState })
       return
     }
 
     if (isSelectedForSorting && order !== undefined) {
       if (order === 'asc') {
-        // enable sort desc
         updateState({ sort: id, order: 'desc', ...initialQueryState })
         return
       }
 
-      // disable sort
       updateState({ sort: undefined, order: undefined, ...initialQueryState })
     }
   }

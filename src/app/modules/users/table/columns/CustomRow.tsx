@@ -3,8 +3,6 @@ import { FC } from 'react'
 import { flexRender, Row } from '@tanstack/react-table'
 import { UserModel } from '@modules/users/types'
 
-// Accept any row shape; cells render using column defs
-
 type Props = {
   row: Row<UserModel>
 }

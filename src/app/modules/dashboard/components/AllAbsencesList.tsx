@@ -3,8 +3,6 @@ import Flatpickr from 'react-flatpickr'
 import 'flatpickr/dist/flatpickr.css'
 import { listAbsence } from '../api'
 
-// Local type matching the provided API response for all users
-// This is read-only and tailored to the server payload
 interface AllAbsenceItem {
   id: string
   createdAt: string
@@ -41,7 +39,6 @@ const AllAbsencesList: React.FC<Props> = ({ className = '', title = 'All Users A
   const [take, setTake] = useState(10)
   const [total, setTotal] = useState(0)
 
-  // Date-time range filter
   const initialStart = (() => {
     const d = new Date()
     d.setDate(1)
@@ -59,7 +56,6 @@ const AllAbsencesList: React.FC<Props> = ({ className = '', title = 'All Users A
     setLoading(true)
     setError(null)
     try {
-      // listAbsence signature includes an unused id param; pass empty string
       const response = await listAbsence('', {
         page,
         take,

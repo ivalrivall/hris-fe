@@ -1,6 +1,5 @@
 import { AuthModel } from '../types/auth.types'
 
-// Keep only pure helpers here. Axios setup moved to src/app/services/http.ts
 const AUTH_LOCAL_STORAGE_KEY = 'kt-auth-react-v'
 
 const getAuth = (): AuthModel | undefined => {
@@ -16,7 +15,6 @@ const getAuth = (): AuthModel | undefined => {
   try {
     const auth: AuthModel = JSON.parse(lsValue) as AuthModel
     if (auth) {
-      // You can easily check auth_token expiration also
       return auth
     }
   } catch (error) {

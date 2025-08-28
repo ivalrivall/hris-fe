@@ -51,7 +51,6 @@ const UserEditModalForm: FC<Props> = ({ user, isUserLoading }) => {
     name: user.name ?? initialUser.name,
     email: user.email ?? initialUser.email,
     phone: user.phone ?? initialUser.phone,
-    // Never prefill password fields for security
     password: '',
     password_confirmation: '',
   }), [user])
@@ -80,7 +79,6 @@ const UserEditModalForm: FC<Props> = ({ user, isUserLoading }) => {
       try {
         const payload: User = { ...values }
 
-        // Create
         if (!isNotEmpty(payload.id)) {
           if (payload.password_confirmation == payload.password) {
             delete payload.password_confirmation
@@ -91,11 +89,8 @@ const UserEditModalForm: FC<Props> = ({ user, isUserLoading }) => {
               payload.phone ?? '',
               payload.password ?? '',
             )
-            // If create API returns the new user id and you want to upload avatar on create too,
-            // you can add logic here to upload avatarFile with that id
           }
         } else {
-          // Update
           const id = String(payload.id)
           const updateData: {
             name?: string
@@ -117,7 +112,6 @@ const UserEditModalForm: FC<Props> = ({ user, isUserLoading }) => {
               updateData.password = payload.password
             }
           }
-          // If avatar selected, send as multipart along with fields; otherwise regular JSON
           await apiUpdateUser(id, updateData, avatarFile ?? undefined)
         }
       } catch (ex) {
@@ -179,7 +173,6 @@ const UserEditModalForm: FC<Props> = ({ user, isUserLoading }) => {
                     const file = e.currentTarget.files?.[0] ?? null
                     setAvatarFile(file)
 
-                    // Preview locally
                     if (file) {
                       const reader = new FileReader()
                       reader.onload = () => setAvatarPreview(reader.result as string)
@@ -188,12 +181,10 @@ const UserEditModalForm: FC<Props> = ({ user, isUserLoading }) => {
                       setAvatarPreview(null)
                     }
 
-                    // Upload immediately for existing users
                     try {
                       const id = userForEdit.id
                       if (file && id) {
                         await apiUpdateUserAvatar(String(id), file)
-                        // Optionally refresh the list after successful upload
                         refetch()
                       }
                     } catch (err) {

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// src/app/hooks/useFirebaseMessaging.ts
 import { useEffect, useRef } from 'react';
 import axios from 'axios';
 import { messaging, getToken, onMessage } from '../../../firebase';
+import { useToast } from '../components/ToastProvider';
 
 type Options = {
   shouldSubscribe?: boolean;
@@ -17,6 +17,7 @@ export const useFirebaseMessaging = (
   onReceive?: (payload: any) => void,
   options?: Options
 ) => {
+  const { addToast } = useToast();
   const lastSubscribedTokenRef = useRef<string | null>(null);
 
   useEffect(() => {
@@ -40,7 +41,7 @@ export const useFirebaseMessaging = (
           console.log('Service Worker registered for FCM:', swReg)
         }
 
-        const token = await getToken(messaging, { vapidKey: VAPID_KEY, serviceWorkerRegistration: swReg }) ;
+        const token = await getToken(messaging, { vapidKey: VAPID_KEY, serviceWorkerRegistration: swReg });
         if (!token) return;
 
         // Subscribe token to topic via backend if requested
@@ -64,31 +65,16 @@ export const useFirebaseMessaging = (
     fetchTokenAndMaybeSubscribe();
 
     const messageForeground = onMessage(messaging, (payload) => {
-      console.log('on message', payload)
-      // Show a foreground notification (supports notification or data-only payloads)
+      console.log('onMessageForeground', payload)
       try {
         const p: any = payload as any
         const notif = p?.notification || {}
         const data = p?.data || {}
-        const title = notif.title || data.title || 'Notification'
         const body = notif.body || data.body || ''
-        const icon = notif.icon || data.icon || '/media/logos/dexa-group-splash.jpg'
-        const clickAction = notif.click_action || data.click_action || data.link
 
-        if (Notification.permission === 'granted') {
-          const n = new Notification(title, {
-            body,
-            icon,
-            data: { clickAction },
-          })
-          if (clickAction) {
-            n.onclick = () => {
-              window.open(clickAction, '_self')
-            }
-          }
-        }
+        addToast(body, 'info')
       } catch {
-        // ignore Notification API errors
+        // ignore toast rendering errors
       }
       onReceive?.(payload as any);
     });

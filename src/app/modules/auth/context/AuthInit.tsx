@@ -1,4 +1,3 @@
-// src/app/modules/auth/context/AuthInit.tsx
 import { FC, useEffect, useState } from 'react'
 import { LayoutSplashScreen } from '@metronic/layout/core'
 import { getUserByToken } from '@modules/auth/api'

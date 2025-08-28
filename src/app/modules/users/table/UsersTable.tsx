@@ -13,7 +13,6 @@ const UsersTable = () => {
   const users = useQueryResponseData()
   const isLoading = useQueryResponseLoading()
 
-  // Use the array from the API as-is (users is already UserModel[])
   const data = useMemo<UserModel[]>(() => users ?? [], [users])
   const columns = useMemo(() => usersColumns, [])
 

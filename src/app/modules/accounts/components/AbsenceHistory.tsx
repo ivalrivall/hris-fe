@@ -11,25 +11,20 @@ type Props = {
 
 const AbsenceHistory: React.FC<Props> = ({ className }) => {
   const { currentUser } = useAuth()
-  // Server returns AbsenceListResponse; keep a flat array locally for rendering
   const [absenceList, setAbsenceList] = useState<AbsenceListResponse['data']>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [page, setPage] = useState(1)
   const [take] = useState(10)
   const [total, setTotal] = useState(0)
-  // Search functionality not implemented; removed unused state
-
-  // Date-time range filter using Flatpickr
   const initialStart = (() => {
     const d = new Date()
-    d.setDate(1) // start of current month
+    d.setDate(1)
     d.setHours(0, 0, 0, 0)
     return d
   })()
   const initialEnd = new Date()
   const [dateRange, setDateRange] = useState<Date[]>([initialStart, initialEnd])
-  // Applied range used for server-side filtering (Apply button controls when to refetch)
   const [appliedStartDate, setAppliedStartDate] = useState<string>(() => initialStart.toISOString())
   const [appliedEndDate, setAppliedEndDate] = useState<string>(() => initialEnd.toISOString())
 
@@ -43,7 +38,6 @@ const AbsenceHistory: React.FC<Props> = ({ className }) => {
         startDate: appliedStartDate,
         endDate: appliedEndDate,
       })
-      // Server-side pagination response { data, meta }
       setAbsenceList(response.data.data)
       setTotal(response.data.meta?.itemCount ?? 0)
     } catch (err) {
@@ -57,17 +51,13 @@ const AbsenceHistory: React.FC<Props> = ({ className }) => {
   useEffect(() => {
     fetchData()
     fetchData()
-    // Re-fetch when page, user, or applied date range changes
   }, [page, currentUser?.id, appliedStartDate, appliedEndDate])
-  // Server-side filtering is applied; no additional client-side date filtering needed
   const filteredAbsences = useMemo(() => absenceList, [absenceList])
 
   const handleDateFilter = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // Apply the date filters and reset to first page to refetch
     const [start, end] = dateRange
     const startISO = start ? new Date(start).toISOString() : ''
-    // If end is missing (single click), use end of start day
     let endISO = ''
     if (end) {
       endISO = new Date(end).toISOString()

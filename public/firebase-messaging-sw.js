@@ -1,5 +1,5 @@
-importScripts('https://www.gstatic.com/firebasejs/10.5.0/firebase-app-compat.js');
-importScripts('https://www.gstatic.com/firebasejs/10.5.0/firebase-messaging-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/12.1.0/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/12.1.0/firebase-messaging-compat.js');
 
 firebase.initializeApp({
   apiKey: 'AIzaSyCQdm52HAaym4Dtwo_yaAn51_8bGrHEIjk',
@@ -14,9 +14,8 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage(function (payload) {
-  console.log('payload', payload)
-  // Support notification or data-only payloads
   const notif = payload.notification || {};
+  console.log('background message notif', notif)
   const data = payload.data || {};
   const title = notif.title || data.title || 'Notification';
   const body = notif.body || data.body || '';
@@ -49,3 +48,36 @@ self.addEventListener('notificationclick', function (event) {
     );
   }
 });
+
+self.addEventListener('push', (event) => {
+  try {
+    const rawText = event.data ? event.data.text() : ''
+    let payload = {}
+    try { payload = rawText ? JSON.parse(rawText) : {} } catch { payload = {} }
+    // If this looks like an FCM payload, let onBackgroundMessage handle it
+    if (payload && (payload.notification || payload.data)) {
+      return
+    }
+
+    const title = (payload && payload.title) || 'Test Push'
+    const body = (payload && payload.body) || (typeof rawText === 'string' ? rawText : '') || 'This is a test push'
+    const icon = (payload && payload.icon) || '/favicon.ico'
+    const clickAction = (payload && (payload.click_action || payload.link)) || null
+
+    event.waitUntil(
+      self.registration.showNotification(title, {
+        body,
+        icon,
+        data: { clickAction },
+      })
+    )
+  } catch (e) {
+    event.waitUntil(
+      self.registration.showNotification('Test Push', {
+        body: 'Push received',
+        icon: '/favicon.ico',
+      })
+    )
+  }
+})
+
